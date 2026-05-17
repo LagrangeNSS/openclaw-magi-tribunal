@@ -39,29 +39,29 @@ The three chambers have separate workspaces and separate instructions. The host 
 
 ```mermaid
 flowchart LR
-    R(("MAGI Tribunal<br/>MAGI 裁决系统"))
+    R(("MAGI Tribunal / MAGI 裁决系统"))
 
-    R --> H["magi host<br/>裁决主机"]
-    H --> H1["claim intake<br/>拆分主张"]
-    H --> H2["sealed case packet<br/>封装案件材料"]
-    H --> H3["round orchestration<br/>编排辩论回合"]
-    H --> H4["verdict aggregation<br/>汇总结论"]
+    R --> H["magi host / 裁决主机"]
+    H --> H1["claim intake / 拆分主张"]
+    H --> H2["sealed case packet / 封装案件材料"]
+    H --> H3["round orchestration / 编排辩论回合"]
+    H --> H4["verdict aggregation / 汇总结论"]
 
-    R --> C["independent chambers<br/>独立裁决院"]
-    C --> C1["MELCHIOR<br/>evidence, logic, timeline<br/>证据、逻辑、时间线"]
-    C --> C2["BALTHASAR<br/>context, framing, meaning<br/>语境、框架、现实含义"]
-    C --> C3["CASPER<br/>counterargument, contamination, incentives<br/>反论点、污染、动机"]
+    R --> C["independent chambers / 独立裁决院"]
+    C --> C1["MELCHIOR / 证据、逻辑、时间线"]
+    C --> C2["BALTHASAR / 语境、框架、现实含义"]
+    C --> C3["CASPER / 反论点、污染、动机"]
 
-    R --> G["workflow guarantees<br/>工作流保证"]
-    G --> G1["explicit per-agent workspaces<br/>显式独立工作区"]
-    G --> G2["no durable case memory<br/>不持久化临时案件记忆"]
-    G --> G3["always show three judgments<br/>必须展示三院判断"]
+    R --> G["workflow guarantees / 工作流保证"]
+    G --> G1["explicit per-agent workspaces / 显式独立工作区"]
+    G --> G2["no durable case memory / 不持久化临时案件记忆"]
+    G --> G3["always show three judgments / 必须展示三院判断"]
 
-    R --> I["OpenClaw integration<br/>OpenClaw 接入"]
+    R --> I["OpenClaw integration / OpenClaw 接入"]
     I --> I1["openclaw.magi.example.json5"]
-    I --> I2["host-integration skill<br/>host 调用技能"]
-    I --> I3["install scripts<br/>安装脚本"]
-    I --> I4["install prompts<br/>安装提示词"]
+    I --> I2["host-integration skill / host 调用技能"]
+    I --> I3["install scripts / 安装脚本"]
+    I --> I4["install prompts / 安装提示词"]
 ```
 
 ---
@@ -70,35 +70,35 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    U["User asks a disputed or truth-sensitive question<br/>用户提出争议或查证类问题"] --> H["Host agent<br/>默认 host agent"]
-    H --> Q{"Use MAGI?<br/>是否需要 MAGI"}
+    U["User asks a disputed question / 用户提出争议问题"] --> H["Host agent / 默认 host agent"]
+    H --> Q{"Use MAGI? / 是否需要 MAGI"}
 
-    Q -- "No / 否" --> N["Host answers normally<br/>host 正常回答"]
-    Q -- "Yes / 是" --> M["magi tribunal host<br/>MAGI 裁决主机"]
+    Q -- "No / 否" --> N["Host answers normally / host 正常回答"]
+    Q -- "Yes / 是" --> M["magi tribunal host / MAGI 裁决主机"]
 
-    M --> I["Intake: split claims, terms, unknowns<br/>受理：拆分主张、术语、未知点"]
-    I --> E["Evidence collection and source grading<br/>收集证据并评估来源"]
-    E --> P["Sealed case packet<br/>封装统一案件材料"]
+    M --> I["Intake: claims, terms, unknowns / 受理：主张、术语、未知点"]
+    I --> E["Evidence collection and source grading / 收集证据并评估来源"]
+    E --> P["Sealed case packet / 封装统一案件材料"]
 
-    P --> ME["MELCHIOR opening ballot<br/>MELCHIOR 初始判断"]
-    P --> BA["BALTHASAR opening ballot<br/>BALTHASAR 初始判断"]
-    P --> CA["CASPER opening ballot<br/>CASPER 初始判断"]
+    P --> ME["MELCHIOR opening ballot / MELCHIOR 初始判断"]
+    P --> BA["BALTHASAR opening ballot / BALTHASAR 初始判断"]
+    P --> CA["CASPER opening ballot / CASPER 初始判断"]
 
-    ME --> O["Objection exchange<br/>反驳交换"]
+    ME --> O["Objection exchange / 反驳交换"]
     BA --> O
     CA --> O
 
-    O --> MF["MELCHIOR final ballot<br/>MELCHIOR 最终投票"]
-    O --> BF["BALTHASAR final ballot<br/>BALTHASAR 最终投票"]
-    O --> CF["CASPER final ballot<br/>CASPER 最终投票"]
+    O --> MF["MELCHIOR final ballot / MELCHIOR 最终投票"]
+    O --> BF["BALTHASAR final ballot / BALTHASAR 最终投票"]
+    O --> CF["CASPER final ballot / CASPER 最终投票"]
 
-    MF --> A["Aggregation with confidence caps<br/>汇总并校准置信度"]
+    MF --> A["Aggregation with confidence caps / 汇总并校准置信度"]
     BF --> A
     CF --> A
 
-    A --> S["Sealed tribunal packet<br/>最终裁决包"]
-    S --> D["Show all three chamber judgments<br/>展示三院独立判断"]
-    D --> R["Host may polish language, not verdict<br/>host 可润色表达，但不能改结论"]
+    A --> S["Sealed tribunal packet / 最终裁决包"]
+    S --> D["Show all three chamber judgments / 展示三院独立判断"]
+    D --> R["Host may polish language, not verdict / host 可润色表达，但不能改结论"]
 ```
 
 ---
@@ -107,30 +107,30 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant User as User / 用户
-    participant Host as Host Agent / 主 agent
-    participant MAGI as magi / 裁决主机
-    participant M as MELCHIOR / 证据逻辑
-    participant B as BALTHASAR / 语境解释
-    participant C as CASPER / 对抗污染
+    participant U as User
+    participant H as Host Agent
+    participant G as MAGI Host
+    participant M as MELCHIOR
+    participant B as BALTHASAR
+    participant C as CASPER
 
-    User->>Host: disputed claim / 争议主张
-    Host->>MAGI: delegate case / 委托裁决
-    MAGI->>MAGI: normalize claims and collect evidence / 拆分主张并收集证据
-    MAGI->>M: sealed case packet / 统一案件材料
-    MAGI->>B: sealed case packet / 统一案件材料
-    MAGI->>C: sealed case packet / 统一案件材料
-    M-->>MAGI: opening ballot / 初始投票
-    B-->>MAGI: opening ballot / 初始投票
-    C-->>MAGI: opening ballot / 初始投票
-    MAGI->>M: objections from other chambers / 其他院的反驳
-    MAGI->>B: objections from other chambers / 其他院的反驳
-    MAGI->>C: objections from other chambers / 其他院的反驳
-    M-->>MAGI: final ballot / 最终投票
-    B-->>MAGI: final ballot / 最终投票
-    C-->>MAGI: final ballot / 最终投票
-    MAGI-->>Host: sealed verdict packet / 封装裁决包
-    Host-->>User: readable answer with all chamber judgments / 可读输出，并展示三院判断
+    U->>H: disputed claim / 争议主张
+    H->>G: delegate case / 委托裁决
+    G->>G: normalize claims and collect evidence / 拆分主张并收集证据
+    G->>M: sealed case packet / 统一案件材料
+    G->>B: sealed case packet / 统一案件材料
+    G->>C: sealed case packet / 统一案件材料
+    M-->>G: opening ballot / 初始投票
+    B-->>G: opening ballot / 初始投票
+    C-->>G: opening ballot / 初始投票
+    G->>M: objections from other chambers / 其他院的反驳
+    G->>B: objections from other chambers / 其他院的反驳
+    G->>C: objections from other chambers / 其他院的反驳
+    M-->>G: final ballot / 最终投票
+    B-->>G: final ballot / 最终投票
+    C-->>G: final ballot / 最终投票
+    G-->>H: sealed verdict packet / 封装裁决包
+    H-->>U: readable answer with all chamber judgments / 展示三院判断
 ```
 
 ---
@@ -459,5 +459,3 @@ Before publishing your own fork, keep private data out of git:
 The included `.gitignore` avoids archives, editor folders, and local scratch directories. Add project-specific ignores if you add test fixtures or private examples.
 
 仓库内置 `.gitignore` 会忽略压缩包、编辑器目录和本地临时目录。如果你以后加入测试夹具或私有示例，请继续补充忽略规则。
-#   o p e n c l a w - m a g i - t r i b u n a l  
- 
