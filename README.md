@@ -523,25 +523,3 @@ The host integration is incomplete. Install the host skill and merge the routing
 
 ---
 
-## Publishing Notes / 发布注意
-
-This repo is safe to publish as a template package because it contains instructions and placeholder workspaces, not private OpenClaw runtime state.
-
-这个仓库适合作为模板发布，因为它只包含指令和占位 workspace，不包含你的私有 OpenClaw 运行时状态。
-
-Before publishing your own fork, keep private data out of git:
-
-发布你自己的 fork 前，请不要提交这些内容：
-
-- `~/.openclaw/openclaw.json` if it contains tokens or private channel ids.
-- 含有 token 或私有渠道 id 的 `~/.openclaw/openclaw.json`。
-- Agent session transcripts.
-- agent 会话转录记录。
-- OAuth state, API keys, cookies, local credentials.
-- OAuth 状态、API key、cookie、本地凭据。
-- Personal memory files that came from real conversations.
-- 来自真实对话的个人记忆文件。
-
-The included `.gitignore` avoids archives, editor folders, and local scratch directories. Add project-specific ignores if you add test fixtures or private examples.
-
-仓库内置 `.gitignore` 会忽略压缩包、编辑器目录和本地临时目录。如果你以后加入测试夹具或私有示例，请继续补充忽略规则。
