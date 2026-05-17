@@ -1,0 +1,90 @@
+{
+  // Merge this into your existing openclaw.json.
+  //
+  // Workspace layout:
+  // - copy workspace-magi/*           -> ~/.openclaw/workspace-magi/
+  // - copy workspace-magi-melchior/*  -> ~/.openclaw/workspace-magi-melchior/
+  // - copy workspace-magi-balthasar/* -> ~/.openclaw/workspace-magi-balthasar/
+  // - copy workspace-magi-casper/*    -> ~/.openclaw/workspace-magi-casper/
+  //
+  // If your host agent should call MAGI, also copy:
+  // - host-integration/skills/magi-tribunal/SKILL.md
+  // into the host workspace skills directory.
+  //
+  // Important:
+  // - Keep the explicit workspace paths below. Without them, multi-agent
+  //   installs may inherit the same default workspace and lose isolation.
+  // - If an existing host agent calls MAGI through sessions_spawn, add
+  //   subagents: { allowAgents: ["magi"] } to that host agent.
+
+  tools: {
+    profile: "full",
+  },
+
+  agents: {
+    list: [
+      {
+        id: "magi",
+        workspace: "~/.openclaw/workspace-magi",
+        skills: ["magi-tribunal"],
+        subagents: {
+          allowAgents: [
+            "magi-melchior",
+            "magi-balthasar",
+            "magi-casper",
+          ],
+          requireAgentId: true,
+        },
+        identity: {
+          name: "MAGI",
+          theme: "sealed tribunal host",
+        },
+      },
+      {
+        id: "magi-melchior",
+        workspace: "~/.openclaw/workspace-magi-melchior",
+        skills: [],
+        identity: {
+          name: "MELCHIOR",
+          theme: "evidence and logic chamber",
+        },
+        // Optional hardening if your sandbox image is configured:
+        // sandbox: { mode: "all", scope: "agent", workspaceAccess: "ro" },
+      },
+      {
+        id: "magi-balthasar",
+        workspace: "~/.openclaw/workspace-magi-balthasar",
+        skills: [],
+        identity: {
+          name: "BALTHASAR",
+          theme: "context and interpretation chamber",
+        },
+        // Optional hardening if your sandbox image is configured:
+        // sandbox: { mode: "all", scope: "agent", workspaceAccess: "ro" },
+      },
+      {
+        id: "magi-casper",
+        workspace: "~/.openclaw/workspace-magi-casper",
+        skills: [],
+        identity: {
+          name: "CASPER",
+          theme: "adversarial challenge chamber",
+        },
+        // Optional hardening if your sandbox image is configured:
+        // sandbox: { mode: "all", scope: "agent", workspaceAccess: "ro" },
+      },
+    ],
+  },
+
+  bindings: [
+    // Optional: hard-route one dedicated input to MAGI.
+    //
+    // {
+    //   agentId: "magi",
+    //   match: {
+    //     channel: "telegram",
+    //     peer: { kind: "direct", id: "123456789" },
+    //   },
+    // },
+  ],
+}
