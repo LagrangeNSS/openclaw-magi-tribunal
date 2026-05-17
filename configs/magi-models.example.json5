@@ -1,0 +1,69 @@
+{
+  // Optional model matrix for MAGI Tribunal.
+  //
+  // Merge only the parts you need into ~/.openclaw/openclaw.json.
+  // Do not append the agent blocks as duplicates. Merge each model field
+  // into the existing agent block with the same id.
+  // Replace the provider/model refs with models already enabled in your
+  // OpenClaw setup. You can also use your own aliases.
+  //
+  // OpenClaw accepts either:
+  // - model: "provider/model"
+  // - model: { primary: "provider/model", fallbacks: ["provider/model"] }
+
+  agents: {
+    defaults: {
+      // Model catalog and aliases for /model and per-agent model fields.
+      // Keep your existing entries and merge these with them.
+      models: {
+        "openai/gpt-5.5": {
+          alias: "magi-large",
+        },
+        "openai/gpt-5.4-mini": {
+          alias: "magi-fast",
+        },
+        "anthropic/claude-opus-4-6": {
+          alias: "magi-opus",
+        },
+        "anthropic/claude-sonnet-4-6": {
+          alias: "magi-sonnet",
+        },
+      },
+    },
+
+    list: [
+      {
+        id: "magi",
+        // Host benefits from the strongest synthesis model available.
+        model: {
+          primary: "magi-large",
+          fallbacks: ["magi-sonnet", "magi-fast"],
+        },
+      },
+      {
+        id: "magi-melchior",
+        // Evidence and logic work usually benefits from a careful model.
+        model: {
+          primary: "magi-large",
+          fallbacks: ["magi-sonnet", "magi-fast"],
+        },
+      },
+      {
+        id: "magi-balthasar",
+        // Context work can use either the strong model or a cheaper balanced one.
+        model: {
+          primary: "magi-sonnet",
+          fallbacks: ["magi-large", "magi-fast"],
+        },
+      },
+      {
+        id: "magi-casper",
+        // Adversarial review should not be too weak; keep a strong fallback.
+        model: {
+          primary: "magi-large",
+          fallbacks: ["magi-opus", "magi-fast"],
+        },
+      },
+    ],
+  },
+}

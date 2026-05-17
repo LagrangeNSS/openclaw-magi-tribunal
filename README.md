@@ -59,9 +59,10 @@ flowchart LR
 
     R --> I["OpenClaw integration / OpenClaw 接入"]
     I --> I1["openclaw.magi.example.json5"]
-    I --> I2["host-integration skill / host 调用技能"]
-    I --> I3["install scripts / 安装脚本"]
-    I --> I4["install prompts / 安装提示词"]
+    I --> I2["model matrix / 模型矩阵"]
+    I --> I3["host-integration skill / host 调用技能"]
+    I --> I4["install scripts / 安装脚本"]
+    I --> I5["install prompts / 安装提示词"]
 ```
 
 ---
@@ -179,6 +180,8 @@ openclaw-magi-tribunal/
 ├─ README.md
 ├─ .gitignore
 ├─ openclaw.magi.example.json5
+├─ configs/
+│  └─ magi-models.example.json5
 ├─ scripts/
 │  ├─ install-magi.ps1
 │  └─ install-magi.sh
@@ -264,6 +267,79 @@ Keep these fields:
 - `skills: []` for the three chambers unless you deliberately give them skills later.
 - 三个 chamber 保持 `skills: []`，除非你明确想给它们开放技能。
 
+### Model Configuration / 模型配置
+
+Each MAGI agent can use its own model. This is useful when you want the host to use a strong synthesis model, MELCHIOR to use a careful evidence model, BALTHASAR to use a balanced context model, and CASPER to use a strong adversarial reviewer.
+
+四个 MAGI agent 都可以单独指定模型。如果你希望主机用强综合模型，MELCHIOR 用严谨证据模型，BALTHASAR 用均衡语境模型，CASPER 用更强的对抗审查模型，就可以这样配置。
+
+OpenClaw accepts either a direct model string or a primary/fallback object:
+
+OpenClaw 支持两种写法：直接模型字符串，或 primary/fallback 对象：
+
+```json5
+model: "provider/model"
+```
+
+```json5
+model: {
+  primary: "provider/model",
+  fallbacks: ["provider/model"],
+}
+```
+
+For a complete editable example, see:
+
+完整可改示例见：
+
+- `configs/magi-models.example.json5`
+
+Minimal per-agent example:
+
+最小 per-agent 示例：
+
+```json5
+agents: {
+  defaults: {
+    models: {
+      "openai/gpt-5.5": { alias: "magi-large" },
+      "openai/gpt-5.4-mini": { alias: "magi-fast" },
+    },
+  },
+  list: [
+    {
+      id: "magi",
+      model: { primary: "magi-large", fallbacks: ["magi-fast"] },
+    },
+    {
+      id: "magi-melchior",
+      model: { primary: "magi-large", fallbacks: ["magi-fast"] },
+    },
+    {
+      id: "magi-balthasar",
+      model: { primary: "magi-fast", fallbacks: ["magi-large"] },
+    },
+    {
+      id: "magi-casper",
+      model: { primary: "magi-large", fallbacks: ["magi-fast"] },
+    },
+  ],
+}
+```
+
+Notes:
+
+说明：
+
+- Use provider/model refs that are already enabled in your OpenClaw setup.
+- 请使用你本机 OpenClaw 已启用的 `provider/model`。
+- If you use aliases, define them under `agents.defaults.models` first.
+- 如果使用别名，先在 `agents.defaults.models` 中定义。
+- When merging into an existing `agents.list`, update matching agent ids instead of duplicating them.
+- 合并到已有 `agents.list` 时，应更新同名 agent，不要重复创建。
+- If you do not set per-agent models, MAGI inherits your normal OpenClaw default model.
+- 如果不设置 per-agent model，MAGI 会继承 OpenClaw 默认模型。
+
 If your existing host agent should call MAGI through explicit subagent dispatch, add this to that host agent:
 
 如果你的现有 host agent 要通过显式 subagent 调度 MAGI，请给 host agent 增加：
@@ -302,7 +378,8 @@ Short version:
 Install the attached openclaw-magi-tribunal zip into my local OpenClaw setup.
 Back up existing MAGI files first.
 Install the four workspaces, merge openclaw.magi.example.json5, keep explicit workspace paths,
-keep magi.subagents.allowAgents, install the host skill if my default host should call MAGI,
+keep magi.subagents.allowAgents, optionally merge configs/magi-models.example.json5 after replacing model refs,
+install the host skill if my default host should call MAGI,
 and verify that final MAGI output shows MELCHIOR, BALTHASAR, and CASPER independently.
 ```
 
@@ -310,7 +387,8 @@ and verify that final MAGI output shows MELCHIOR, BALTHASAR, and CASPER independ
 请把我附上的 openclaw-magi-tribunal zip 安装到本机 OpenClaw。
 先备份已有 MAGI 文件。
 安装四个 workspace，合并 openclaw.magi.example.json5，保留显式 workspace 路径，
-保留 magi.subagents.allowAgents；如果我的默认 host 需要调用 MAGI，请安装 host skill；
+保留 magi.subagents.allowAgents；如需自定义模型，替换模型引用后合并 configs/magi-models.example.json5；
+如果我的默认 host 需要调用 MAGI，请安装 host skill；
 最后验证 MAGI 输出会独立展示 MELCHIOR、BALTHASAR、CASPER 三院判断。
 ```
 
@@ -410,6 +488,14 @@ Check that every MAGI agent has an explicit `workspace` path in `openclaw.json`.
 If dispatch uses explicit subagents, add `magi` to the host agent's `subagents.allowAgents`.
 
 如果调度使用显式 subagent，把 `magi` 加入 host agent 的 `subagents.allowAgents`。
+
+`A model alias is not recognized`
+
+`模型别名无法识别`
+
+Make sure the alias is defined under `agents.defaults.models`, or use the full `provider/model` value directly in the agent's `model` field.
+
+确认别名已经定义在 `agents.defaults.models` 中，或者直接在 agent 的 `model` 字段里使用完整 `provider/model`。
 
 `MAGI cannot call the chambers`
 

@@ -16,16 +16,30 @@
   //   installs may inherit the same default workspace and lose isolation.
   // - If an existing host agent calls MAGI through sessions_spawn, add
   //   subagents: { allowAgents: ["magi"] } to that host agent.
+  // - Each MAGI agent can use its own model. Uncomment the model blocks
+  //   below and replace provider/model with models enabled in your setup.
 
   tools: {
     profile: "full",
   },
 
   agents: {
+    // Optional shared model catalog. Keep or merge your existing entries.
+    // The keys must be enabled OpenClaw model refs in provider/model format.
+    //
+    // defaults: {
+    //   models: {
+    //     "openai/gpt-5.5": { alias: "magi-large" },
+    //     "openai/gpt-5.4-mini": { alias: "magi-fast" },
+    //   },
+    // },
+
     list: [
       {
         id: "magi",
         workspace: "~/.openclaw/workspace-magi",
+        // Optional per-agent model.
+        // model: { primary: "magi-large", fallbacks: ["magi-fast"] },
         skills: ["magi-tribunal"],
         subagents: {
           allowAgents: [
@@ -43,6 +57,8 @@
       {
         id: "magi-melchior",
         workspace: "~/.openclaw/workspace-magi-melchior",
+        // Optional per-agent model.
+        // model: { primary: "magi-large", fallbacks: ["magi-fast"] },
         skills: [],
         identity: {
           name: "MELCHIOR",
@@ -54,6 +70,8 @@
       {
         id: "magi-balthasar",
         workspace: "~/.openclaw/workspace-magi-balthasar",
+        // Optional per-agent model.
+        // model: { primary: "magi-large", fallbacks: ["magi-fast"] },
         skills: [],
         identity: {
           name: "BALTHASAR",
@@ -65,6 +83,8 @@
       {
         id: "magi-casper",
         workspace: "~/.openclaw/workspace-magi-casper",
+        // Optional per-agent model.
+        // model: { primary: "magi-large", fallbacks: ["magi-fast"] },
         skills: [],
         identity: {
           name: "CASPER",
